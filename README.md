@@ -5,7 +5,7 @@
 An IoT-powered, full-stack home security system integrating **motion detection**, **gas leak monitoring**, **smart rain alerts**, and **RFID access control**, all managed via a responsive **real-time web dashboard**.
 
 <p align="center">
-  <img src="assets/logo.png" alt="SenSecure Logo" width="200"/>
+  <img src="assets/LOGO.png" alt="SenSecure Logo" width="200"/>
 </p>
 
 ---
@@ -109,7 +109,7 @@ Mobile-friendly UI for full control on the go.
 
 ## ⚙️ Hardware Setup  
 ESP32, sensors, servo motors and real-time integration in action.  
-![Hardware Setup](assets/hardware.png)
+![Hardware Setup](assets/HARDWARE.png)
 
 ---
 
