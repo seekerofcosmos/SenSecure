@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SenSecure Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Firebase SDK -->
+     
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="login-redirect.js"></script>
+    <script src="blynk-integration.js"></script>
+    <style>
+        /* Initially hide the main content until authentication is verified */
+        .main-content {
+            display: none;
+        }
+        
+        /* Show a loading indicator */
+        .auth-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+        }
+        
+        .auth-loading-content {
+            text-align: center;
+        }
+        
+        .auth-loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Revised topbar layout styling */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .menu-toggle {
+            order: 1;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-left: 20px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            margin-right: 15px;
+            order: 1;
+        }
+        
+        .user-avatar {
+            order: 2;
+        }
+        
+        .blynk-status {
+            margin-left: auto;
+            order: 3;
+        }
+
+        .blynk-status span {
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+        }
+
+        .blynk-connected {
+            color: #28a745;
+        }
+
+        .blynk-disconnected {
+            color: #dc3545;
+        }
+        
+        /* CSS for the modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-loading" id="auth-loading">
+        <div class="auth-loading-content">
+            <div class="auth-loading-spinner"></div>
+            <p>Verifying authentication...</p>
+        </div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Sen<span>Secure</span></div>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#" id="devices-btn">Devices</a></li>
+                <li><a href="#notifications" id="notifications-btn">Notifications</a></li>
+                <li><a href="#" id="settings-btn">Settings</a></li>
+                <li><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="topbar">
+            <button class="menu-toggle" id="menu-toggle">☰</button>
+            <div class="user-menu">
+                <div class="left-section" style="display: flex; align-items: center;">
+                    <div class="user-info">
+                        <div class="user-name" id="user-name">User Name</div>
+                        <div class="user-role">Home Owner</div>
+                    </div>
+                    <div class="user-avatar" id="user-avatar">U</div>
+                </div>
+                <div class="blynk-status">
+                    <span id="blynk-connection-status" class="blynk-disconnected">Blynk: Offline</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-container">
+            <div class="page-title">
+                <h1>Dashboard</h1>
+                <p>Monitor and control your home security system</p>
+            </div>
+            
+            <div class="weather-panel">
+                <div class="weather-header">
+                    <h2>Weather Forecast</h2>
+                    <div id="location">Loading location...</div>
+                </div>
+                <div class="weather-content">
+                    <div class="current-weather">
+                        <div class="weather-icon" id="weather-icon">🌤️</div>
+                        <div class="weather-info">
+                            <div class="temperature" id="temperature">--°C</div>
+                            <div class="condition" id="condition">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="weather-details">
+                        <div class="detail">
+                            <div class="detail-label">Humidity</div>
+                            <div class="detail-value" id="humidity">--%</div>
+                        </div>
+                        <div class="detail">
+                            <div class="detail-label">Wind</div>
+                            <div class="detail-value" id="wind">-- km/h</div>
+                        </div>
+                        <div class="detail">
+                            <div class="detail-label">Forecast</div>
+                            <div class="detail-value" id="forecast">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-cards">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Rain Alert System</h2>
+                        <div class="card-icon rain-icon">☂️</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="status">
+                            <div class="status-indicator status-inactive" id="rain-status-indicator"></div>
+                            <span id="rain-status">No rain detected</span>
+                        </div>
+                        <p>Current weather: <span id="weather-condition">Clear</span></p>
+                        <p>Clothes status: <span id="clothes-status">Outside</span></p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" id="bring-inside-btn">Bring Clothes Inside</button>
+                        <button class="btn btn-secondary" id="put-outside-btn">Put Clothes Outside</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Gas Leak Detection</h2>
+                        <div class="card-icon gas-icon">⚠️</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="status">
+                            <div class="status-indicator status-inactive" id="gas-status-indicator"></div>
+                            <span id="gas-status">No gas leak detected</span>
+                        </div>
+                        <p>Gas level:</p>
+                        <div class="gas-meter">
+                            <div class="gas-level" id="gas-level" style="width: 20%;"></div>
+                        </div>
+                        <p>Regulator status: <span id="regulator-status">ON</span></p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-success" id="turn-on-btn">Turn Regulator ON</button>
+                        <button class="btn btn-danger" id="turn-off-btn">Turn Regulator OFF</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Door Lock System</h2>
+                        <div class="card-icon door-icon">🔒</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="status">
+                            <div class="status-indicator status-active" id="lock-status-indicator"></div>
+                            <span id="lock-status">Door Locked</span>
+                        </div>
+                        <p>Last activity: <span id="door-last-activity">10 minutes ago</span></p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-success" id="lock-btn">Lock Door</button>
+                        <button class="btn btn-danger" id="unlock-btn">Unlock Door</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Motion Sensor</h2>
+                        <div class="card-icon motion-icon">👁️</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="status">
+                            <div class="status-indicator status-active" id="motion-status-indicator"></div>
+                            <span id="motion-status">Sensor Active</span>
+                        </div>
+                        <p>Last detected motion: <span id="last-motion">None</span></p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-success" id="sensor-on-btn">Turn Sensor ON</button>
+                        <button class="btn btn-danger" id="sensor-off-btn">Turn Sensor OFF</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notifications" id="notifications">
+                <div class="notification-header">
+                    <h2>Recent Notifications</h2>
+                </div>
+                <ul class="notification-list" id="notification-list">
+                    <!-- Initial notifications will be added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for features under development -->
+    <div class="modal" id="feature-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Feature Under Development</h2>
+            <p>This feature is currently under development and will be available soon.</p>
+        </div>
+    </div>
+    
+    <!-- Load our script files -->
+    <script>
+
+// Firebase config Add from firebase site
+
+
+// OpenWeather API Key
+const WEATHER_API_KEY = "YOUR OWN KEY";
+
+// Initialize Firebase
+let auth, db;
+try {
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    console.log("Firebase initialized successfully");
+} catch (error) {
+    console.error("Firebase initialization failed:", error);
+    // Continue with demo mode
+}
+
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded");
+    
+    // Initialize the UI with default values
+    initializeUI();
+    
+    // Check authentication state
+    checkAuthState();
+    
+    // Setup all event listeners
+    setupEventListeners();
+});
+
+// Initialize UI with default values
+function initializeUI() {
+    // Set default user info
+    document.getElementById('user-name').textContent = "Demo User";
+    document.getElementById('user-avatar').textContent = "D";
+    
+    // Set Blynk status to offline by default
+    updateBlynkStatus(false);
+    
+    // Load dashboard data
+    loadDashboardData();
+    
+    // Initialize weather
+    getWeatherData();
+}
+
+// Update Blynk connection status
+function updateBlynkStatus(isConnected) {
+    const statusElement = document.getElementById('blynk-connection-status');
+    if (statusElement) {
+        if (isConnected) {
+            statusElement.textContent = 'Blynk: Connected';
+            statusElement.className = 'blynk-connected';
+        } else {
+            statusElement.textContent = 'Blynk: Offline';
+            statusElement.className = 'blynk-disconnected';
+        }
+    }
+}
+
+// Check authentication state
+function checkAuthState() {
+    if (auth && typeof auth.onAuthStateChanged === 'function') {
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                console.log("User is signed in:", user.uid);
+                getUserData(user);
+                // Show main content
+                document.querySelector('.main-content').style.display = 'block';
+                document.getElementById('auth-loading').style.display = 'none';
+            } else {
+                console.log("No user is signed in");
+                // Show main content anyway for demo
+                document.querySelector('.main-content').style.display = 'block';
+                document.getElementById('auth-loading').style.display = 'none';
+                // Optional: Redirect to login page
+                // window.location.href = 'login.html';
+            }
+        });
+    } else {
+        console.log("Auth not available, running in demo mode");
+        // Show main content for demo
+        document.querySelector('.main-content').style.display = 'block';
+        document.getElementById('auth-loading').style.display = 'none';
+    }
+}
+
+// Setup all event listeners
+function setupEventListeners() {
+    // Menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('active');
+            }
+        });
+    }
+    
+    // Logout button
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleLogout();
+        });
+    }
+    
+    // Features under development
+    const devicesBtn = document.getElementById('devices-btn');
+    const settingsBtn = document.getElementById('settings-btn');
+    const featureModal = document.getElementById('feature-modal');
+    const closeModal = document.querySelector('.close-modal');
+    
+    if (devicesBtn && featureModal) {
+        devicesBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            featureModal.style.display = 'block';
+        });
+    }
+    
+    if (settingsBtn && featureModal) {
+        settingsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            featureModal.style.display = 'block';
+        });
+    }
+    
+    if (closeModal && featureModal) {
+        closeModal.addEventListener('click', function() {
+            featureModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(event) {
+            if (event.target === featureModal) {
+                featureModal.style.display = 'none';
+            }
+        });
+    }
+    
+    // Notifications link scrolling
+    const notificationsBtn = document.getElementById('notifications-btn');
+    if (notificationsBtn) {
+        notificationsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const notificationsSection = document.getElementById('notifications');
+            if (notificationsSection) {
+                notificationsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // Setup dashboard controls
+    setupDashboardControls();
+    
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menu-toggle');
+        
+        if (!sidebar || !menuToggle) return;
+        
+        const isClickInsideSidebar = sidebar.contains(event.target);
+        const isClickOnMenuToggle = menuToggle.contains(event.target);
+        
+        // If clicked outside sidebar and menu toggle, and sidebar is active on mobile
+        if (!isClickInsideSidebar && !isClickOnMenuToggle && window.innerWidth <= 992) {
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && window.innerWidth > 992) {
+            sidebar.classList.remove('active');
+        }
+    });
+}
+
+// Handle logout
+function handleLogout() {
+    if (auth && typeof auth.signOut === 'function') {
+        auth.signOut()
+            .then(function() {
+                console.log("User logged out successfully");
+                alert("Logged out successfully");
+                // Redirect to login page
+                window.location.href = 'https://www.sensecure.systems/';
+            })
+            .catch(function(error) {
+                console.error("Logout error:", error);
+                alert("Logout failed: " + error.message);
+            });
+    } else {
+        console.log("Demo mode: No actual logout performed");
+        alert("Demo mode: Logout functionality not available");
+    }
+}
+
+// Get user data from Firestore
+function getUserData(user) {
+    if (!db || !user) return;
+    
+    // Try to fetch user data from Firestore
+    db.collection('users').doc(user.uid).get()
+        .then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                
+                // Get first name and display it
+                if (userData.firstName) {
+                    document.getElementById('user-name').textContent = userData.firstName;
+                    document.getElementById('user-avatar').textContent = userData.firstName.charAt(0).toUpperCase();
+                } else {
+                    // Fallback to extracting first name from display name or email
+                    const firstName = extractFirstName(user);
+                    document.getElementById('user-name').textContent = firstName;
+                    document.getElementById('user-avatar').textContent = firstName.charAt(0).toUpperCase();
+                }
+                
+                // Get user's preferred city for weather
+                if (userData.city) {
+                    getWeatherData(userData.city);
+                } else {
+                    // Default city or try to get from geolocation
+                    getWeatherData();
+                }
+            } else {
+                // No user document found - use fallback
+                const firstName = extractFirstName(user);
+                document.getElementById('user-name').textContent = firstName;
+                document.getElementById('user-avatar').textContent = firstName.charAt(0).toUpperCase();
+                
+                // Default location handling
+                getWeatherData();
+            }
+        })
+        .catch(error => {
+            console.error("Error getting user data:", error);
+            const firstName = extractFirstName(user);
+            document.getElementById('user-name').textContent = firstName;
+            document.getElementById('user-avatar').textContent = firstName.charAt(0).toUpperCase();
+            
+            // Default weather
+            getWeatherData();
+        });
+}
+
+// Helper function to extract first name from user object
+function extractFirstName(user) {
+    if (user.displayName) {
+        // Split the display name and take the first part
+        return user.displayName.split(' ')[0];
+    } else if (user.email) {
+        // Take the part before @ in email
+        return user.email.split('@')[0];
+    } else {
+        return "User";
+    }
+}
+
+
+function loadDashboardData() {
+    // Set static values instead of simulating
+    document.getElementById('gas-level').style.width = '20%';
+    document.getElementById('gas-status').textContent = 'No gas leak detected';
+    document.getElementById('gas-status-indicator').className = 'status-indicator status-inactive';
+    
+    document.getElementById('last-motion').textContent = 'None';
+    
+    // Add initial notifications for demo
+    addNotification('Welcome', 'Welcome to SenSecure Dashboard', 'system');
+    addNotification('System Status', 'All systems operational', 'system');
+    addNotification('Blynk Connection', 'Blynk server is currently offline', 'warning');
+}
+
+function addNotification(title, message, type) {
+    const now = new Date();
+    const list = document.getElementById('notification-list');
+    
+    const item = document.createElement('li');
+    item.className = 'notification-item notification-' + type;
+    
+    const info = document.createElement('div');
+    info.className = 'notification-info';
+    
+    const titleElement = document.createElement('div');
+    titleElement.className = 'notification-title';
+    titleElement.textContent = title;
+    
+    const timeElement = document.createElement('div');
+    timeElement.className = 'notification-time';
+    timeElement.textContent = now.toLocaleTimeString();
+    
+    const messageElement = document.createElement('div');
+    messageElement.className = 'notification-message';
+    messageElement.textContent = message;
+    
+    info.appendChild(titleElement);
+    info.appendChild(timeElement);
+    
+    item.appendChild(info);
+    item.appendChild(messageElement);
+    
+    list.prepend(item);
+    
+    // Limit to 10 notifications
+    if (list.children.length > 10) {
+        list.removeChild(list.lastChild);
+    }
+}
+window.addNotification = addNotification;
+// Updated to accept city parameter
+function getWeatherData(city = 'Patiala') {
+    document.getElementById('location').textContent = city;
+    
+    try {
+        // Direct API call with provided location
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${WEATHER_API_KEY}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Weather API returned status ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                updateWeatherUI(data);
+            })
+            .catch(error => {
+                console.error('Weather API Error:', error);
+                // Use demo data instead
+                useDemoWeatherData();
+            });
+    } catch (error) {
+        console.error('Weather fetch error:', error);
+        // Use demo data as fallback
+        useDemoWeatherData();
+    }
+}
+
+function useDemoWeatherData() {
+    // Fallback demo weather data
+    const demoData = {
+        main: {
+            temp: 22,
+            humidity: 65
+        },
+        weather: [{
+            main: "Clear",
+            description: "clear sky",
+            icon: "01d"
+        }],
+        wind: {
+            speed: 5.2
+        }
+    };
+    
+    updateWeatherUI(demoData);
+    document.getElementById('location').textContent = 'Demo Location';
+}
+
+function updateWeatherUI(data) {
+    document.getElementById('temperature').textContent = Math.round(data.main.temp) + '°C';
+    document.getElementById('condition').textContent = data.weather[0].description;
+    document.getElementById('humidity').textContent = data.main.humidity + '%';
+    document.getElementById('wind').textContent = Math.round(data.wind.speed) + ' km/h';
+    
+    // Update rain status based on weather
+    const weatherCondition = data.weather[0].main.toLowerCase();
+    document.getElementById('weather-condition').textContent = data.weather[0].main;
+    
+    if (weatherCondition.includes('rain') || weatherCondition.includes('thunderstorm') || weatherCondition.includes('drizzle')) {
+        document.getElementById('rain-status').textContent = 'Rain detected';
+        document.getElementById('rain-status-indicator').className = 'status-indicator status-warning';
+        document.getElementById('forecast').textContent = 'Rain expected';
+        
+        // Add notification
+        addNotification('Rain Alert', 'Rain detected in your area. Clothes outside may get wet.', 'rain');
+    } else if (weatherCondition.includes('cloud')) {
+        document.getElementById('rain-status').textContent = 'No rain detected';
+        document.getElementById('rain-status-indicator').className = 'status-indicator status-inactive';
+        document.getElementById('forecast').textContent = 'Cloudy';
+    } else {
+        document.getElementById('rain-status').textContent = 'No rain detected';
+        document.getElementById('rain-status-indicator').className = 'status-indicator status-inactive';
+        document.getElementById('forecast').textContent = 'Clear';
+    }
+    
+    // Set weather icon
+    const weatherIcon = getWeatherIcon(data.weather[0].icon);
+    document.getElementById('weather-icon').textContent = weatherIcon;
+}
+
+function getWeatherIcon(iconCode) {
+    const iconMap = {
+        '01d': '☀️', // clear sky day
+        '01n': '🌙', // clear sky night
+        '02d': '⛅', // few clouds day
+        '02n': '☁️', // few clouds night
+        '03d': '☁️', // scattered clouds
+        '03n': '☁️',
+        '04d': '☁️', // broken clouds
+        '04n': '☁️',
+        '09d': '🌧️', // shower rain
+        '09n': '🌧️',
+        '10d': '🌦️', // rain day
+        '10n': '🌧️', // rain night
+        '11d': '⛈️', // thunderstorm
+        '11n': '⛈️',
+        '13d': '❄️', // snow
+        '13n': '❄️',
+        '50d': '🌫️', // mist
+        '50n': '🌫️'
+    };
+    
+    return iconMap[iconCode] || '🌤️';
+}
+
+function setupDashboardControls() {
+    // This function should be empty as blynk-integration.js now handles all controls
+    console.log("Dashboard controls initialized by Blynk integration");
+}
+// Helper function to safely add event listeners
+function addSafeEventListener(id, event, callback) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener(event, callback);
+    } else {
+        console.warn(`Element with ID '${id}' not found for event listener`);
+    }
+}
+    </script>
+
+    <script>
+        // Show main content and remove loading indicator
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingElement = document.getElementById('auth-loading');
+                const mainContent = document.querySelector('.main-content');
+                
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+                
+                if (mainContent) {
+                    mainContent.style.display = 'block';
+                }
+            }, 1500); // Give enough time for auth check to complete
+        });
+    </script>
+
+</body>
+</html>

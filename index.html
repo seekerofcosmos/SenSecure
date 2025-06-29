@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SenSecure</title>
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add this line -->
+    <link rel="stylesheet" href="modal-styles.css">
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+    <!-- Updated Header with FontAwesome icon -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">Sen<span>Secure</span></a>
+                <div class="nav-links">
+                    <a href="#intelligent-features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#team">Team</a>
+                    <div class="auth-buttons">
+                        <button class="btn btn-login" id="login-btn">Login</button>
+                        <button class="btn btn-register" id="register-btn">Register</button>
+                    </div>
+                </div>
+                <button class="mobile-menu-btn" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Updated Mobile Menu with buttons -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#intelligent-features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#team">Team</a>
+        <div class="mobile-auth-buttons">
+            <button class="btn btn-login" id="mobile-login-btn">Login</button>
+            <button class="btn btn-register" id="mobile-register-btn">Register</button>
+        </div>
+    </div>
+
+<!-- Hero Section with fixed buttons -->
+<section class="hero" id="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1 class="hero-title">Smart. Safe. Secure.</h1>
+            <p class="hero-subtitle">SenSecure brings intelligent home monitoring and safety to your fingertips. Stay protected with real-time alerts and remote control capabilities.</p>
+            <div class="hero-cta">
+                <a href="#" class="btn btn-primary" id="hero-register-btn">Get Started</a>
+                <a href="#intelligent-features" class="btn btn-secondary" id="features-link">Learn More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Intelligent Features section -->
+    <section id="intelligent-features" class="section section-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Intelligent Features</h2>
+                <p>SenSecure combines advanced AI technology with intuitive controls to deliver smart protection for your home</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Rain Alert Feature -->
+                <div class="feature-card">
+                    <input type="checkbox" id="rain-toggle" class="card-toggle">
+                    <div class="card-front">
+                        <div class="feature-icon-wrapper rain-icon">
+                            <span class="feature-icon">☂️</span>
+                        </div>
+                        <h3>Smart Rain Alert</h3>
+                        <p class="feature-description">Real-time weather alerts based on your location. Never worry about laundry getting wet again.</p>
+                        <div class="button-container">
+                            <label for="rain-toggle" class="read-more-btn">Read More</label>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <h3>Smart Rain Alert</h3>
+                        <p>With geolocation technology and weather API integration, SenSecure alerts you before rain starts and can automatically close windows or retract awnings.</p>
+                        <div class="button-container">
+                            <label for="rain-toggle" class="read-less-btn">Read Less</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gas Leak Detection -->
+                <div class="feature-card">
+                    <input type="checkbox" id="gas-toggle" class="card-toggle">
+                    <div class="card-front">
+                        <div class="feature-icon-wrapper gas-icon">
+                            <span class="feature-icon">⚠️</span>
+                        </div>
+                        <h3>Gas Leak Detection</h3>
+                        <p class="feature-description">Advanced sensors monitor gas levels, providing immediate alerts and automatic shutdown.</p>
+                        <div class="button-container">
+                            <label for="gas-toggle" class="read-more-btn">Read More</label>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <h3>Gas Leak Detection</h3>
+                        <p>Sensitive detectors identify even small leaks, sending notifications to your phone and automatically turning off your gas supply for maximum safety.</p>
+                        <div class="button-container">
+                            <label for="gas-toggle" class="read-less-btn">Read Less</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Smart Door Locks -->
+                <div class="feature-card">
+                    <input type="checkbox" id="lock-toggle" class="card-toggle">
+                    <div class="card-front">
+                        <div class="feature-icon-wrapper lock-icon">
+                            <span class="feature-icon">🔒</span>
+                        </div>
+                        <h3>Smart Door Locks</h3>
+                        <p class="feature-description">Lock or unlock doors from anywhere using your smartphone with status monitoring.</p>
+                        <div class="button-container">
+                            <label for="lock-toggle" class="read-more-btn">Read More</label>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <h3>Smart Door Locks</h3>
+                        <p>Control access remotely and receive instant notifications whenever your door is unlocked.</p>
+                        <div class="button-container">
+                            <label for="lock-toggle" class="read-less-btn">Read Less</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Motion Detection -->
+                <div class="feature-card">
+                    <input type="checkbox" id="motion-toggle" class="card-toggle">
+                    <div class="card-front">
+                        <div class="feature-icon-wrapper motion-icon">
+                            <span class="feature-icon">👁️</span>
+                        </div>
+                        <h3>Motion Detection</h3>
+                        <p class="feature-description">Detect intruders with AI-powered motion sensing for complete peace of mind.</p>
+                        <div class="button-container">
+                            <label for="motion-toggle" class="read-more-btn">Read More</label>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <h3>Motion Detection</h3>
+                        <p>Smart algorithms reduce false alarms while ensuring no unauthorized access goes undetected.</p>
+                        <div class="button-container">
+                            <label for="motion-toggle" class="read-less-btn">Read Less</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section section-dark" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How SenSecure Works</h2>
+                <p>Simple setup, powerful protection in just three easy steps</p>
+            </div>
+            <div class="features-grid">
+                <div class="step-card" data-step="0">
+                    <div class="step-icon">
+                        <div class="step-number">1</div>
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Register Your Device</h3>
+                        <p>Create an account and register your ESP32-based SenSecure device with a unique identification code to ensure secure communication.</p>
+                    </div>
+                </div>
+                <div class="step-card" data-step="1">
+                    <div class="step-icon">
+                        <div class="step-number">2</div>
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Connect & Configure</h3>
+                        <p>Set up your device preferences, select your city for weather updates, and customize alert thresholds to match your specific needs.</p>
+                    </div>
+                </div>
+                <div class="step-card" data-step="2">
+                    <div class="step-icon">
+                        <div class="step-number">3</div>
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Monitor & Control</h3>
+                        <p>Access your dashboard from any device to view real-time data, receive alerts, and control your home security features remotely.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="process-diagram">
+                <div class="process-step">
+                    <div class="process-dot" data-step="0"></div>
+                    <div class="process-info">Register</div>
+                </div>
+                <div class="process-line"></div>
+                <div class="process-step">
+                    <div class="process-dot" data-step="1"></div>
+                    <div class="process-info">Configure</div>
+                </div>
+                <div class="process-line"></div>
+                <div class="process-step">
+                    <div class="process-dot" data-step="2"></div>
+                    <div class="process-info">Monitor</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section section-light" id="team">
+        <div class="container">
+            <div class="section-title">
+                <h2>Meet Our Team</h2>
+                <p>The minds behind SenSecure's innovative home security solutions</p>
+            </div>
+            <div class="team-grid">
+                <!-- Team members in specified order: Ananth, Smarth, Aryan, Dhruv, Hemant -->
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="ananth-photo.jpg" alt="Ananth Vaibhav">
+                    </div>
+                    <div class="team-info">
+                        <h3>Ananth Vaibhav</h3>
+                        <p>Team Lead</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="smarth-photo.jpg" alt="Smarth Singh">
+                    </div>
+                    <div class="team-info">
+                        <h3>Smarth Singh</h3>
+                        <p>Security Expert & Hardware Lead</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="aryan-photo.jpg" alt="Aryan Khanna">
+                    </div>
+                    <div class="team-info">
+                        <h3>Aryan Khanna</h3>
+                        <p>Hardware Engineer & Backend Lead</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="dhruv-photo.jpg" alt="Dhruv Sanmotra">
+                    </div>
+                    <div class="team-info">
+                        <h3>Dhruv Sanmotra</h3>
+                        <p>Systems Architect & Backend Engineer</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="hemant-photo.jpg" alt="Hemant Kumar">
+                    </div>
+                    <div class="team-info">
+                        <h3>Hemant Kumar</h3>
+                        <p>UI/UX Designer</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About SenSecure</h3>
+                    <p>SenSecure is a cutting-edge home security and monitoring solution designed to bring peace of mind through smart technology and real-time alerts.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#intelligent-features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#team">Our Team</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Information</h3>
+                    <ul class="footer-links contact-links">
+                        <li>
+                            <a href="mailto:">
+                                <i class="far fa-envelope"></i> 
+                                <span></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:">
+                                <i class="far fa-envelope"></i> 
+                                <span></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="tel:+91">
+                                <i class="fas fa-phone"></i> 
+                                <span>+91-</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="address-link">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>c/o ECED at Vyom Hall, TIET Patiala, Punjab India 147004</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 SenSecure. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to SenSecure</h2>
+                <p>Access your dashboard and control your smart home security</p>
+                <button class="close-modal" id="close-login-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="success-message" id="login-success">
+                    <p><i class="fas fa-check-circle"></i> Login successful! Redirecting to dashboard...</p>
+                </div>
+                <div class="error-message" id="login-error">
+                    <p><i class="fas fa-exclamation-circle"></i> <span id="login-error-text">Invalid email or password. Please try again.</span></p>
+                </div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" name="email" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" name="password" required />
+                        <div class="forgot-password">
+                            <a href="#" id="forgot-password-link">Forgot Password?</a>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create a SenSecure Account</h2>
+                <p>Get started with smart home security in minutes</p>
+                <button class="close-modal" id="close-register-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="success-message" id="register-success">
+                    <p><i class="fas fa-check-circle"></i> Registration successful! You can now log in to your account.</p>
+                </div>
+                <div class="error-message" id="register-error">
+                    <p><i class="fas fa-exclamation-circle"></i> <span id="register-error-text">An error occurred during registration. Please try again.</span></p>
+                </div>
+                <form id="register-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-firstname">First Name</label>
+                            <input type="text" id="register-firstname" name="firstname" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="register-lastname">Last Name</label>
+                            <input type="text" id="register-lastname" name="lastname" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email Address</label>
+                        <input type="email" id="register-email" name="email" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" name="password" required minlength="8" />
+                    </div>
+                    <div class="form-group">
+                        <label for="register-city">Your City (for weather alerts)</label>
+                        <input type="text" id="register-city" name="city" placeholder="e.g. New Delhi" required />
+                    </div>
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+
+    <!-- Firebase initialization -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration PLEASE REPLACE AS PER YOUR OWN
+        const firebaseConfig = {
+            apiKey: "MY API KEY",
+            authDomain: "MY AUTH DOMAIN",
+            projectId: "MY PROJECT DOMAIN",
+            storageBucket: " ", // Update to match your config
+            messagingSenderId: " ",
+            appId: " ",
+            measurementId: " "
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // Expose to window for other scripts
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDB = db;
+    </script>
+    
+    <!-- JavaScript for How It Works section -->
+    <script>
+        // Enhanced script with more subtle animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepCards = document.querySelectorAll('.step-card');
+            const processDots = document.querySelectorAll('.process-dot');
+            
+            // Function to reset all dots
+            function resetDots() {
+                processDots.forEach(dot => {
+                    dot.classList.remove('active');
+                });
+            }
+            
+            // Function to reset all cards
+            function resetCards() {
+                stepCards.forEach(card => {
+                    card.classList.remove('active');
+                });
+            }
+            
+            // Make the first dot active by default
+            processDots[0].classList.add('active');
+            
+            // Set up interaction events for each card
+            stepCards.forEach(card => {
+                const stepIndex = card.dataset.step;
+                
+                // Mouse hover events for desktop
+                card.addEventListener('mouseenter', function() {
+                    resetDots();
+                    resetCards();
+                    processDots[stepIndex].classList.add('active');
+                    card.classList.add('active');
+                });
+                
+                // Touch events for mobile
+                card.addEventListener('touchstart', function(e) {
+                    // Don't prevent default to allow scrolling
+                    resetDots();
+                    resetCards();
+                    processDots[stepIndex].classList.add('active');
+                    card.classList.add('active');
+                });
+                
+                // Click events for all devices
+                card.addEventListener('click', function() {
+                    resetDots();
+                    resetCards();
+                    processDots[stepIndex].classList.add('active');
+                    card.classList.add('active');
+                });
+            });
+            
+            // Process dots interaction
+            processDots.forEach(dot => {
+                const dotIndex = dot.dataset.step;
+                
+                dot.addEventListener('mouseenter', function() {
+                    resetDots();
+                    resetCards();
+                    dot.classList.add('active');
+                    stepCards[dotIndex].classList.add('active');
+                });
+                
+                dot.addEventListener('click', function() {
+                    resetDots();
+                    resetCards();
+                    dot.classList.add('active');
+                    stepCards[dotIndex].classList.add('active');
+                });
+            });
+            
+            // Subtle animation cycle for highlighting steps
+            let currentStep = 0;
+            
+            function cycleThroughSteps() {
+                resetDots();
+                resetCards();
+                processDots[currentStep].classList.add('active');
+                stepCards[currentStep].classList.add('active');
+                currentStep = (currentStep + 1) % processDots.length;
+            }
+            
+            // Start cycling animation (less frequent and more subtle)
+            let cycleInterval = setInterval(cycleThroughSteps, 4000);
+            
+            // Stop animation when user interacts
+            const howItWorksSection = document.getElementById('how-it-works');
+            
+            howItWorksSection.addEventListener('mouseenter', function() {
+                clearInterval(cycleInterval);
+            });
+            
+            howItWorksSection.addEventListener('mouseleave', function() {
+                clearInterval(cycleInterval);
+                cycleInterval = setInterval(cycleThroughSteps, 4000);
+            });
+            
+            // Observer for animation on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Reset the cycling when section comes into view
+                        resetDots();
+                        resetCards();
+                        processDots[0].classList.add('active');
+                        stepCards[0].classList.add('active');
+                        currentStep = 0;
+                        clearInterval(cycleInterval);
+                        cycleInterval = setInterval(cycleThroughSteps, 4000);
+                    } else {
+                        clearInterval(cycleInterval);
+                    }
+                });
+            }, { threshold: 0.2 });
+            
+            // Observe the How It Works section
+            observer.observe(howItWorksSection);
+        });
+    </script>
+
+    <!-- JavaScript for main functionality -->
+    <script src="main.js"></script>
+    
+    <!-- Firebase auth functionality -->
+    <script type="module" src="firebase-auth.js"></script>
+    
+    <!-- Mobile menu script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get mobile menu button and menu
+            const menuBtn = document.getElementById('mobile-menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            // Toggle mobile menu visibility
+            menuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+                // Change icon when menu is opened/closed
+                const icon = this.querySelector('i');
+                if (mobileMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Connect mobile login buttons to desktop ones
+            document.getElementById('mobile-login-btn').addEventListener('click', function() {
+                document.getElementById('login-btn').click();
+                mobileMenu.classList.remove('active');
+            });
+            
+            document.getElementById('mobile-register-btn').addEventListener('click', function() {
+                document.getElementById('register-btn').click();
+                mobileMenu.classList.remove('active');
+            });
+            
+            // Close menu when clicking menu items
+            const menuLinks = mobileMenu.querySelectorAll('a[href^="#"]');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                    menuBtn.querySelector('i').classList.remove('fa-times');
+                    menuBtn.querySelector('i').classList.add('fa-bars');
+                });
+            });
+        });
+    </script>
+<!-- Modal functionality script -->
+<script src="modal.js"></script>
+</body>
+</html>
