@@ -100,7 +100,7 @@ Mobile-friendly UI for full control on the go.
 
 ### ⚙️ Hardware Setup  
 ESP32, sensors, servo motors and real-time integration in action.  
-![Hardware Setup](assets/hardware.png)
+![Hardware Setup](assets/HARDWARE.png)
 
 
 ## 🙏 Acknowledgments
