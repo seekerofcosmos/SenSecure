@@ -88,7 +88,7 @@ Live control panel showing sensor statuses, alerts, and manual overrides.
 
 ### 📱 Mobile View – Navigation  
 Dropdown interface adapted for smaller screens.  
-![Mobile Navigation](assets/mobledropdown.png)
+![Mobile Navigation](assets/mobiledropdown.png)
 
 ---
 
