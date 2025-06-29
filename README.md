@@ -6,6 +6,8 @@ An IoT-powered, full-stack home security system integrating **motion detection**
 
 🌍 Live Site: [www.sensecure.systems](http://www.sensecure.systems)
 
+🌍 Demonstration Videos: https://drive.google.com/drive/folders/1hiyIC9jKv1s9RY0YgsLydAIuZf8EGA0q
+
 ## 💡 Overview
 
 SenSecure is designed to make **homes safer, smarter, and more connected**. The system allows users to detect and respond to security or environmental threats with **remote control**, **real-time alerts**, and **automated actions**.
