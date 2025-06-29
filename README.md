@@ -54,6 +54,49 @@ SenSecure is designed to make **homes safer, smarter, and more connected**. The 
 | Dhruv Sanmotra        | Systems Architect                |
 | Hemant Kumar          | UI/UX Designer                   |
 
+## 📷 Screenshots
+
+### 🏠 Homepage  
+Entry point for users with clear navigation and product overview.  
+![Homepage](assets/homepage.png)
+
+---
+
+### ✨ Features Overview  
+Clear listing of what SenSecure offers in terms of smart automation and safety.  
+![Features](assets/features.png)
+
+---
+
+### 📊 System Architecture / Working  
+How the SenSecure system integrates hardware, cloud, and UI.  
+![System Working](assets/working.png)
+
+---
+
+### 🔐 User Authentication  
+Secure login and account management for user access control.  
+![User Authentication](assets/userauth.png)
+
+---
+
+### 🖥️ Web Dashboard  
+Live control panel showing sensor statuses, alerts, and manual overrides.  
+![Dashboard](assets/dashboard.png)
+
+---
+
+### 📱 Mobile View – Navigation  
+Dropdown interface adapted for smaller screens.  
+![Mobile Navigation](assets/mobledropdown.png)
+
+---
+
+### 📱 Mobile View – Live Dashboard  
+Mobile-friendly UI for full control on the go.  
+![Mobile Dashboard](assets/mobdashboard.png)
+
+
 ## 🙏 Acknowledgments
 
 - **Dr. Mohit Agarwal**, Associate Professor, ECED – Thapar Institute of Engineering and Technology, Patiala
