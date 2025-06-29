@@ -1,17 +1,13 @@
-# SenSecure
-💡 Smart IoT-based home security system with real-time alerts, gas leak detection, smart door locking, rain detection, and remote control via a custom web dashboard.
+
 # SenSecure 🔐🌐
+<img src="assets/LOGO.png" alt="SenSecure Cover Banner" style="width:100%; max-height:300px; object-fit:cover;" />
 
-An IoT-powered, full-stack home security system integrating **motion detection**, **gas leak monitoring**, **smart rain alerts**, and **RFID access control**, all managed via a responsive **real-time web dashboard**.
+💡 A Smart IoT-powered, full-stack home security and monitoring system with real-time alerts, integrating **motion detection**, **gas leak detection**, **smart rain alerts**, and **RFID access control**, all managed via remote control using a responsive **real-time User web dashboard**.
 
-<p align="center">
-  <img src="assets/LOGO.png" alt="SenSecure Logo" width="200"/>
-</p>
 
 ---
 
 # SenSecure 🔐🌐
-
 
 🌍 Live Site: [www.sensecure.systems](http://www.sensecure.systems)
 
