@@ -8,6 +8,8 @@ An IoT-powered, full-stack home security system integrating **motion detection**
   <img src="assets/logo.png" alt="SenSecure Logo" width="200"/>
 </p>
 
+---
+
 # SenSecure 🔐🌐
 
 
@@ -103,9 +105,13 @@ Dropdown interface adapted for smaller screens.
 Mobile-friendly UI for full control on the go.  
 ![Mobile Dashboard](assets/mobdashboard.png)
 
-### ⚙️ Hardware Setup  
+---
+
+## ⚙️ Hardware Setup  
 ESP32, sensors, servo motors and real-time integration in action.  
 ![Hardware Setup](assets/hardware.png)
+
+---
 
 
 ## 🙏 Acknowledgments
