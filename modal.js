@@ -18,8 +18,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const switchToRegisterLink = document.getElementById('switch-to-register');
     const switchToLoginLink = document.getElementById('switch-to-login');
     
+    // Lazy-load Firebase SDK and auth module once when any modal opens
+    let firebaseLoaded = false;
+    async function ensureFirebaseLoaded() {
+        if (firebaseLoaded) return;
+        try {
+            // Load Firebase app/auth/firestore modules on demand
+            await Promise.all([
+                import('https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js'),
+                import('https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js'),
+                import('https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js')
+            ]);
+            // Initialize only once using config present on page
+            if (!window.firebaseApp) {
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js');
+                const { getAuth } = await import('https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js');
+                const { getFirestore } = await import('https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js');
+                const firebaseConfig = window.firebaseConfig || null;
+                if (firebaseConfig) {
+                    const app = initializeApp(firebaseConfig);
+                    window.firebaseApp = app;
+                    window.firebaseAuth = getAuth(app);
+                    window.firebaseDB = getFirestore(app);
+                }
+            }
+            // Load auth UI module only when needed
+            await import('./firebase-auth.js');
+            firebaseLoaded = true;
+        } catch (e) {
+            console.error('Failed to dynamically load Firebase:', e);
+        }
+    }
+
     // Function to open login modal
-    function openLoginModal() {
+    async function openLoginModal() {
+        ensureFirebaseLoaded();
+        // Lazy-load modal CSS if not present
+        if (!document.querySelector('link[href="modal-styles.css"]')) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'modal-styles.css';
+            document.head.appendChild(link);
+        }
         resetForms();
         registerModal.classList.remove('active');
         loginModal.classList.add('active');
@@ -28,7 +68,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Function to open register modal
-    function openRegisterModal() {
+    async function openRegisterModal() {
+        ensureFirebaseLoaded();
+        if (!document.querySelector('link[href="modal-styles.css"]')) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'modal-styles.css';
+            document.head.appendChild(link);
+        }
         resetForms();
         loginModal.classList.remove('active');
         registerModal.classList.add('active');
