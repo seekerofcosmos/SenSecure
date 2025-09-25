@@ -5,14 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SenSecure Dashboard</title>
     <link rel="stylesheet" href="dashboard.css">
-    <!-- Firebase SDK -->
-     
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="auth-guard.js"></script>
-    <script src="login-redirect.js"></script>
-    <script src="blynk-integration.js"></script>
+    <!-- Defer critical scripts and load Firebase SDKs at end -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
     <style>
         /* Initially hide the main content until authentication is verified */
         .main-content {
@@ -313,7 +308,7 @@
     </div>
     
     <!-- Load our script files -->
-    <script>
+    <script defer>
 
 // Firebase config Add from firebase site
 
@@ -754,7 +749,7 @@ function addSafeEventListener(id, event, callback) {
 }
     </script>
 
-    <script>
+    <script defer>
         // Show main content and remove loading indicator
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -771,6 +766,36 @@ function addSafeEventListener(id, event, callback) {
             }, 1500); // Give enough time for auth check to complete
         });
     </script>
+
+    <!-- Firebase SDKs loaded at end to avoid blocking render -->
+    <script type="module">
+        try {
+            const [{ initializeApp }, { getAuth }, { getFirestore }] = await Promise.all([
+                import('https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js'),
+                import('https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js'),
+                import('https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js')
+            ]);
+            const firebaseConfig = window.firebaseConfig || {
+                apiKey: "MY API KEY",
+                authDomain: "MY AUTH DOMAIN",
+                projectId: "MY PROJECT DOMAIN",
+                storageBucket: " ",
+                messagingSenderId: " ",
+                appId: " ",
+                measurementId: " "
+            };
+            const app = initializeApp(firebaseConfig);
+            window.firebase = { auth: () => getAuth(app) };
+            window.firebaseApp = app;
+            window.firebaseAuth = getAuth(app);
+            window.firebaseDB = getFirestore(app);
+        } catch (e) {
+            console.error('Failed to initialize Firebase SDKs:', e);
+        }
+    </script>
+    <script src="auth-guard.js" defer></script>
+    <script src="login-redirect.js" defer></script>
+    <script src="blynk-integration.js" defer></script>
 
 </body>
 </html>

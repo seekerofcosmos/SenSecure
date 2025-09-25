@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SenSecure</title>
-    <!-- Font Awesome for social icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<head>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Add this line -->
-    <link rel="stylesheet" href="modal-styles.css">
-    <meta charset="UTF-8">
+
+    <!-- Preconnects for third-party origins -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    <!-- Non-blocking CSS loading -->
+    <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="styles.css">
+    </noscript>
+
+    <!-- Preload hero image for above-the-fold -->
+    <link rel="preload" as="image" href="hero_sensecure.png" imagesrcset="hero_sensecure.png 1x">
+
+    <!-- Font Awesome for social icons (non-blocking) -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 </head>
 
 <body>
@@ -232,7 +242,7 @@
                 <!-- Team members in specified order: Ananth, Smarth, Aryan, Dhruv, Hemant -->
                 <div class="team-member">
                     <div class="team-photo">
-                        <img src="ananth-photo.jpg" alt="Ananth Vaibhav">
+                        <img src="ananth-photo.jpg" alt="Ananth Vaibhav" loading="lazy" decoding="async">
                     </div>
                     <div class="team-info">
                         <h3>Ananth Vaibhav</h3>
@@ -245,7 +255,7 @@
                 </div>
                 <div class="team-member">
                     <div class="team-photo">
-                        <img src="smarth-photo.jpg" alt="Smarth Singh">
+                        <img src="smarth-photo.jpg" alt="Smarth Singh" loading="lazy" decoding="async">
                     </div>
                     <div class="team-info">
                         <h3>Smarth Singh</h3>
@@ -258,7 +268,7 @@
                 </div>
                 <div class="team-member">
                     <div class="team-photo">
-                        <img src="aryan-photo.jpg" alt="Aryan Khanna">
+                        <img src="aryan-photo.jpg" alt="Aryan Khanna" loading="lazy" decoding="async">
                     </div>
                     <div class="team-info">
                         <h3>Aryan Khanna</h3>
@@ -271,7 +281,7 @@
                 </div>
                 <div class="team-member">
                     <div class="team-photo">
-                        <img src="dhruv-photo.jpg" alt="Dhruv Sanmotra">
+                        <img src="dhruv-photo.jpg" alt="Dhruv Sanmotra" loading="lazy" decoding="async">
                     </div>
                     <div class="team-info">
                         <h3>Dhruv Sanmotra</h3>
@@ -284,7 +294,7 @@
                 </div>
                 <div class="team-member">
                     <div class="team-photo">
-                        <img src="hemant-photo.jpg" alt="Hemant Kumar">
+                        <img src="hemant-photo.jpg" alt="Hemant Kumar" loading="lazy" decoding="async">
                     </div>
                     <div class="team-info">
                         <h3>Hemant Kumar</h3>
@@ -447,33 +457,17 @@
     <!-- Overlay -->
     <div class="modal-overlay" id="modal-overlay"></div>
 
-    <!-- Firebase initialization -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-
-        // Your web app's Firebase configuration PLEASE REPLACE AS PER YOUR OWN
-        const firebaseConfig = {
+    <!-- Firebase configuration (no SDK load here; loaded on demand) -->
+    <script>
+        window.firebaseConfig = {
             apiKey: "MY API KEY",
             authDomain: "MY AUTH DOMAIN",
             projectId: "MY PROJECT DOMAIN",
-            storageBucket: " ", // Update to match your config
+            storageBucket: " ",
             messagingSenderId: " ",
             appId: " ",
             measurementId: " "
         };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        
-        // Expose to window for other scripts
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-        window.firebaseDB = db;
     </script>
     
     <!-- JavaScript for How It Works section -->
@@ -598,11 +592,10 @@
         });
     </script>
 
-    <!-- JavaScript for main functionality -->
-    <script src="main.js"></script>
+    <!-- Defer main functionality script -->
+    <script src="main.js" defer></script>
     
-    <!-- Firebase auth functionality -->
-    <script type="module" src="firebase-auth.js"></script>
+    <!-- Removed eager auth module load; loaded on first modal open -->
     
     <!-- Mobile menu script -->
     <script>
@@ -647,7 +640,7 @@
             });
         });
     </script>
-<!-- Modal functionality script -->
-<script src="modal.js"></script>
+<!-- Modal functionality script (deferred) -->
+<script src="modal.js" defer></script>
 </body>
 </html>
